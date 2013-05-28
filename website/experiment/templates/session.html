@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Experiment</title>
+
+<script src="{{ STATIC_URL }}jquery.min.js"></script>
+<script src="{{ STATIC_URL }}jquery.cycle.all.js"></script>
+
+<script src="{{ STATIC_URL }}experiment.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}style.css">
+
+<script>
+var data = {{ data|safe }};
+
+$(document).ready( function() {
+    var controller = new ExperimentController(data["images"])
+});
+
+</script>
+
+</head>
+<body>
+
+ <div id="container">
+
+    <div id="startup">
+        <p>Instructions go here</p>
+        <a href="javascript:;" id="startButton">Start</a>
+    </div>
+
+    <div id="imageBrowser">
+
+        <div id="slideshow">
+        {% for image in images %}
+            <img src="{{  image.url }}" width="800" height="599" />
+        {% endfor %}
+        </div>
+
+        <div id="header">
+            <a href="javascript:;" id="yesButton">Yes</a>
+            <a href="javascript:;" id="noButton">No</a>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Hidden form for submitting results -->
+<form id="resultsForm" action="{% url experiment.views.save %}" method="post" style="display: none">
+    {% csrf_token %}
+    <input id="results" name="results" type="text" />
+</form>
+
+</body>
+</html>
